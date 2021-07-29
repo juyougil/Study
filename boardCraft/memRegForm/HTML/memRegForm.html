@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/CSS/memRegForm.CSS">
+    <title>Document</title>
+    <script src="/JS/jquery-1.11.0.min.js"  type="text/javascript"></script>
+    <script src="/JS/common_func.js"></script>
+    <script>
+        
+        function checkId(){
+            var mem_id = $(".mem_id").val();
+
+            if(isMem_id(mem_id)==false){
+                if(isEmpty(mem_id)){
+                    $(".idMsg").html("<div class='idMsg'></div>")
+                    $(".mem_id").focus();
+                    return false;
+                }
+                $(".idMsg").html("<div class='idMsg' style='color: red;'>아이디는 영소문자로 시작하고<br> 영소문자 또는 숫자 또는 _ 로 5~10자로 구성되야합니다</div>")
+                $(".mem_id").focus();
+                return false;
+            }
+            if(isMem_id(mem_id)){
+                $(".idMsg").html("<div class='idMsg' style='color: blue;'>확인되었습니다.</div>")
+                return true;
+            }
+        };
+        function checkPwd(){
+            var pwd = $(".pwd").val();
+
+            if(isPwd(pwd)==false){
+                if(isEmpty(pwd)){
+                    $(".pwdMsg").html("<div class='pwdMsg'></div>")
+                    $(".pwd").focus();
+                    return false;
+                }
+                $(".pwdMsg").html("<div class='pwdMsg' style='color: red;'>암호는 영소문자 또는 숫자로 5~8자로 구성되어야 합니다.</div>")
+                $(".pwd").focus();
+                return false;
+            }
+            if(isPwd(pwd)){
+                $(".pwdMsg").html("<div class='pwdMsg' style='color: blue;'>확인되었습니다.</div>")
+                return true;
+            }
+            
+                    
+        };
+        function checkRepwd(){
+            var pwd = $(".pwd").val();
+            var re_pwd = $(".re_pwd").val();
+            if(pwd==re_pwd){
+                $(".re_pwdMsg").html("<div class='re_pwdMsg' style='color: blue;'>확인되었습니다.</div>")
+                return true;
+            }
+            if(pwd!==re_pwd){
+                if(isEmpty(re_pwd)){
+                    $(".re_pwdMsg").html("<div class='re_pwdMsg'></div>")
+                    $(".re_pwd").focus();
+                    return false;
+                }
+                $(".re_pwdMsg").html("<div class='re_pwdMsg' style='color: red;'>비밀번호를 다시 입력해주십시오.</div>")
+                $(".re_pwd").focus();
+                return false;
+            }
+              
+        };
+        function checkname(){
+            var mem_name = $(".mem_name").val();
+
+            if(isHangeulName(mem_name)==false){
+                if(isEmpty(mem_name)){
+                    $(".mem_nameMsg").html("<div class='mem_nameMsg'></div>")
+                    $(".mem_name").focus();
+                    return false;
+                }
+                $(".mem_nameMsg").html("<div class='mem_nameMsg' style='color: red;'>이름은 한글 2~20자 까지 입력해야 합니다.</div>")
+                $(".mem_name").focus();
+                return false;
+            }
+            if(isHangeulName(mem_name)){
+                $(".mem_nameMsg").html("<div class='mem_nameMsg' style='color: blue;'>확인되었습니다.</div>")
+                $(".mem_name").focus();
+                return true;
+            }                      
+        };
+        function checktelnum(){
+            var tel_num = $(".tel_num").val();
+
+            if(isTel_Num(tel_num)==false){
+                if(isEmpty(tel_num)){
+                    $(".tel_numMsg").html("<div class='tel_numMsg'></div>")
+                    $(".tel_num").focus();
+                    return false;
+                }
+                $(".tel_numMsg").html("<div class='tel_numMsg' style='color: red;'>휴대폰 번호는 -포함해서 정확하게 입력해주십시오..</div>")
+                $(".tel_num").focus();
+                return false;
+            }
+            if(isTel_Num(tel_num)){
+                $(".tel_numMsg").html("<div class='tel_numMsg' style='color: blue;'>확인되었습니다.</div>")
+                $(".tel_num").focus();
+                return true;
+            }              
+                    
+        };
+        function allCheck(){
+            var mem_id = $(".mem_id").val();
+            var pwd = $(".pwd").val();
+            var re_pwd = $(".re_pwd").val();
+            var mem_name = $(".mem_name").val();
+            var tel_num = $(".tel_num").val();
+
+            if(isMem_id(mem_id)==false){
+                $(".mem_id").focus();
+                return;
+            }
+
+            if(isPwd(pwd)==false){
+                $(".pwd").focus();
+                return;
+            }
+            if(pwd!=re_pwd){
+                $(".re_pwd").focus();
+                return;
+            }
+            
+            if(isHangeulName(mem_name)==false){   
+                $(".mem_name").focus();
+                return;
+            }
+
+            if(isTel_Num(tel_num)==false){
+                $(".tel_num").focus();
+                return;
+            }
+            var checkedConfirmCnt = $(".confirm:checked").length;
+            if(checkedConfirmCnt<2){
+                alert("개인정보제공 동의해주십시오.");
+                return;
+            }
+
+            if(confirm("가입하시겠습니까?")){
+                $(".memRegForm").submit();
+            }
+
+        }
+
+		$(document).ready(
+			function(){
+                $(".mem_id").change(function(){
+					checkId();
+				});
+                $(".pwd").change(function(){
+					checkPwd();
+				});
+                $(".re_pwd").change(function(){
+					checkRepwd();
+				});
+                $(".mem_name").change(function(){
+					checkname();
+				});
+                $(".tel_num").change(function(){
+					checktelnum();
+				});
+
+
+                var obj1 = $(".allConfirm");
+			    var obj2 = $(".confirm");
+                obj1.change(function(){
+                    obj2.prop("checked" ,$(this).prop("checked"));
+				});
+
+                obj2.change(function(){
+                    obj1.prop("checked" , obj2.filter(":checked").length==obj2.length);
+                })
+
+
+    
+
+
+
+
+
+                $(".save_btn").click(function(){
+                    allCheck();
+				});
+
+		});     
+    </script>
+</head>
+<body>
+    <form class ="memRegForm" action="memRegProc.html">
+        <table align="center" cellpadding=5>
+            <tr align="center">
+                <td> 
+                    <font class="headstr">회원가입</font>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table class="mainTable" border="2" style="border-collapse:collapse;" align="center" cellpadding="5">
+                        <tr>
+                            <td>
+                                <input type="text" name="mem_id" class="mem_id" placeholder="이메일">
+                                <div class="idMsg"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 
+                                <input type="password" name="pwd" class="pwd" placeholder="비밀번호">
+                                <div class="pwdMsg"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="password" name="re_pwd" class="re_pwd" placeholder="비밀번호 재확인">
+                                <div class="re_pwdMsg"></div>
+                            </td>
+                        </tr>                        
+                        <tr>
+                            <td>
+                                <input type="text" name="mem_name" class="mem_name" placeholder="이름">
+                                <div class="mem_nameMsg"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" name="tel_num" class="tel_num" placeholder="휴대폰 번호">
+                                <div class="tel_numMsg"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="allConfirm" class="allConfirm"> 모든 항목에 동의합니다.<br>
+                                <div class="allConfirmMsg"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="confirm" class="confirm"> 나이가 14세 이상입니다.<br>
+                                <input type="checkbox" name="confirm" class="confirm"> 개인정보제공에 동의합니다.
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr align="right">
+                <td>
+                    <input type="button" name="save_btn" class="save_btn" value="회원가입" >
+                    <input type="button" name="cancle_btn" class="cancle_btn" value="취소">
+                </td>
+            </tr>
+        </table>
+    </form>
+    
+</body>
+</html>
